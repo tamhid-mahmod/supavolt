@@ -8,6 +8,13 @@
       "when": 1781255681377,
       "tag": "0000_tidy_silver_fox",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1781391342234,
+      "tag": "0001_right_korath",
+      "breakpoints": true
     }
   ]
 }

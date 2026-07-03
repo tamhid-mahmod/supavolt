@@ -1,63 +1,69 @@
-
 export interface User {
-    id: string;
-    email: string;
-    name: string | null;
-    avatarUrl: string | null;
-    createdAt: string;
-    updatedAt: string;
+  id: string;
+  email: string;
+  name: string | null;
+  avatarUrl: string | null;
+  createdAt: string;
+  updatedAt: string;
 }
 
 export type OrgRole = 'admin' | 'developer';
 
 export interface Organization {
-    id: string;
-    name: string;
-    slug: string;
-    createdAt: string;
-    updatedAt: string;
+  id: string;
+  name: string;
+  slug: string;
+  createdAt: string;
+  updatedAt: string;
 }
 
 export interface OrgMember {
-    id: string;
-    orgId: string;
-    userId: string;
-    role: OrgRole;
-    createdAt: string;
+  id: string;
+  orgId: string;
+  userId: string;
+  role: OrgRole;
+  createdAt: string;
 }
-
 
 export interface Project {
-    id: string;
-    orgId: string;
-    name: string;
-    slug: string;
-    dbSchema: string;
-    projectUrl: string;
-    anonKey: string;
-    createdAt: string;
-    updatedAt: string;
+  id: string;
+  orgId: string;
+  name: string;
+  slug: string;
+  dbSchema: string;
+  projectUrl: string;
+  anonKey: string;
+  createdAt: string;
+  updatedAt: string;
 }
 
-
 export interface RegisterInput {
-    email: string;
-    password: string;
-    name: string;
+  email: string;
+  password: string;
+  name: string;
 }
 
 export interface LoginInput {
-    email: string;
-    password: string;
+  email: string;
+  password: string;
 }
 
-
 export interface AuthTokens {
-    accessToken: string;
-    refreshToken: string;
+  accessToken: string;
+  refreshToken: string;
 }
 
 export interface JwtPayload {
   sub: string;
   email: string;
+}
+
+export interface CreateOrgInput {
+  name: string;
+}
+
+export interface OrganizationWithMeta extends Organization {
+  memberCount: number;
+  projectCount: number;
+  role: OrgRole;
 }
