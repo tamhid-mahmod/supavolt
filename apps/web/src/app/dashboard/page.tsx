@@ -4,8 +4,6 @@ import { retrieveMyOrganizationsFromApi } from '@/features/organization/organiza
 export default async function DashboardPage() {
   const orgs = await retrieveMyOrganizationsFromApi();
 
-  console.log('ORG', orgs);
-
   if (orgs.length === 1) {
     redirect(`/organizations/${orgs[0].slug}/projects`);
   }

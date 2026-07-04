@@ -38,14 +38,34 @@ import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { signOut } from '@/features/auth/sign-out';
 import { OrganizationWithMeta } from '@supavolt/types';
 
-const navItems = [
-  { icon: Home, label: 'Home', segment: 'projects' },
+const orgNavItem = { icon: Home, label: 'Home', segment: 'projects' } as const;
+
+const projectNavItems = [
   { icon: Table2, label: 'Database', segment: 'database' },
   { icon: ShieldCheck, label: 'Auth', segment: 'auth' },
   { icon: FolderOpen, label: 'Storage', segment: 'storage' },
   { icon: Code2, label: 'API', segment: 'api' },
   { icon: Radio, label: 'Realtime', segment: 'realtime' },
-];
+] as const;
+
+function buildNavHref(
+  orgSlug: string | undefined,
+  projectSlug: string | undefined,
+  segment: string,
+  scope: 'org' | 'project',
+): string {
+  if (!orgSlug) return '/organizations';
+
+  if (scope === 'org') {
+    return `/organizations/${orgSlug}/projects`;
+  }
+
+  if (projectSlug) {
+    return `/organizations/${orgSlug}/${projectSlug}/${segment}`;
+  }
+
+  return `/organizations/${orgSlug}/projects`;
+}
 
 interface AppSidebarProps {
   orgs: OrganizationWithMeta[];
@@ -54,12 +74,13 @@ interface AppSidebarProps {
 
 export function AppSidebar({ orgs, user }: AppSidebarProps) {
   const pathname = usePathname();
-  const params = useParams<{ slug: string }>();
+  const params = useParams<{ slug: string; projectSlug?: string }>();
   const currentOrg = orgs.find((org) => org.slug === params?.slug) ?? orgs[0];
+  const orgSlug = params?.slug;
+  const projectSlug = params?.projectSlug;
 
   return (
     <Sidebar collapsible="icon">
-      {/* ── Header — org switcher ─────────────────────────────────── */}
       <SidebarHeader>
         <SidebarMenu>
           <SidebarMenuItem>
@@ -75,7 +96,7 @@ export function AppSidebar({ orgs, user }: AppSidebarProps) {
                   <div className="flex flex-col gap-0.5 leading-none">
                     <span className="font-semibold">{currentOrg?.name}</span>
                     <span className="text-xs text-muted-foreground capitalize">
-                      {currentOrg.role}
+                      {currentOrg?.role}
                     </span>
                   </div>
                   <ChevronsUpDown className="ml-auto" />
@@ -92,7 +113,7 @@ export function AppSidebar({ orgs, user }: AppSidebarProps) {
                       className="flex items-center justify-between"
                     >
                       <span>{org.name}</span>
-                      {params?.slug && <Check size={14} />}
+                      {org.slug === params?.slug && <Check size={14} />}
                     </Link>
                   </DropdownMenuItem>
                 ))}
@@ -115,15 +136,45 @@ export function AppSidebar({ orgs, user }: AppSidebarProps) {
         </SidebarMenu>
       </SidebarHeader>
 
-      {/* ── Content — nav items ───────────────────────────────────── */}
       <SidebarContent>
         <SidebarGroup>
           <SidebarGroupContent>
             <SidebarMenu>
-              {navItems.map(({ icon: Icon, label, segment }) => {
-                const href = params?.slug
-                  ? `/organizations/${params.slug}/${segment}`
-                  : '/organizations';
+              <SidebarMenuItem>
+                <SidebarMenuButton
+                  asChild
+                  isActive={
+                    pathname ===
+                    buildNavHref(
+                      orgSlug,
+                      projectSlug,
+                      orgNavItem.segment,
+                      'org',
+                    )
+                  }
+                  tooltip={orgNavItem.label}
+                >
+                  <Link
+                    href={buildNavHref(
+                      orgSlug,
+                      projectSlug,
+                      orgNavItem.segment,
+                      'org',
+                    )}
+                  >
+                    <orgNavItem.icon />
+                    <span>{orgNavItem.label}</span>
+                  </Link>
+                </SidebarMenuButton>
+              </SidebarMenuItem>
+
+              {projectNavItems.map(({ icon: Icon, label, segment }) => {
+                const href = buildNavHref(
+                  orgSlug,
+                  projectSlug,
+                  segment,
+                  'project',
+                );
                 const isActive = pathname === href;
 
                 return (
@@ -146,7 +197,6 @@ export function AppSidebar({ orgs, user }: AppSidebarProps) {
         </SidebarGroup>
       </SidebarContent>
 
-      {/* ── Footer — user menu ────────────────────────────────────── */}
       <SidebarFooter>
         <SidebarMenu>
           <SidebarMenuItem>
