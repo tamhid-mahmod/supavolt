@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@hookform/resolvers": "^5.4.0",
+    "@monaco-editor/react": "^4.7.0",
     "@radix-ui/react-scroll-area": "^1.2.13",
     "@supavolt/constants": "workspace:*",
     "@supavolt/types": "workspace:*",
