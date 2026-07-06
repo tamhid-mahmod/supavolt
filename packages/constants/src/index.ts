@@ -56,3 +56,11 @@ export const FILTER_OPERATORS = {
 } as const;
 
 export type FilterOperator = keyof typeof FILTER_OPERATORS;
+
+// REALTIME
+export const REALTIME_EVENTS = {
+  SUBSCRIBE: 'subscribe',
+  UNSUBSCRIBE: 'unsubscribe',
+  EVENT: 'event',
+  ERROR: 'error',
+} as const;
