@@ -191,3 +191,30 @@ export interface RealtimeEvent {
   projectId: string;
   timestamp: string;
 }
+
+// Storage
+export type BucketAccess = 'public' | 'private';
+
+export interface StorageBucket {
+  id: string;
+  projectId: string;
+  name: string;
+  access: BucketAccess;
+  createdAt: string;
+}
+
+export interface StorageObject {
+  id: string;
+  bucketId: string;
+  name: string;
+  size: number;
+  mimeType: string;
+  utKey: string; // UploadThing file key — used to delete or get signed URL
+  url: string; // public URL (public buckets) or empty string (private)
+  createdAt: string;
+}
+
+export interface CreateBucketInput {
+  name: string;
+  access: BucketAccess;
+}
