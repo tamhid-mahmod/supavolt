@@ -64,3 +64,13 @@ export const REALTIME_EVENTS = {
   EVENT: 'event',
   ERROR: 'error',
 } as const;
+
+// ─── Project Auth ─────────────────────────────────────────────────────────────
+
+export const AUTH_PROVIDERS = {
+  EMAIL: 'email',
+  GOOGLE: 'google',
+  GITHUB: 'github',
+} as const;
+
+export const MAGIC_LINK_EXPIRES_IN = '15m';

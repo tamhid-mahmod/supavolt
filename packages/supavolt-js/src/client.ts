@@ -16,7 +16,7 @@ export class SupavoltClient {
     this.db = new SupavoltDb(projectUrl, apiKey);
     this.realtime = new SupavoltRealtime(projectUrl, apiKey);
     this.storage = new SupavoltStorage(projectUrl, apiKey);
-    this.auth = new SupavoltAuth(projectUrl, apiKey);
+    this.auth = new SupavoltAuth(projectUrl);
   }
 
   from<T = Record<string, unknown>>(table: string) {

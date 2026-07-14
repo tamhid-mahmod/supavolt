@@ -101,6 +101,7 @@ export class ProjectsService {
     const projectSlug = this.generateProjectSlug(dto.name);
     const dbSchema = this.generateDbSchema();
     const projectUrl = `${this.configService.get<string>('API_URL')}/projects/${projectSlug}`;
+    const authJwtSecret = randomBytes(32).toString('hex');
 
     await this.provisionSchema(dbSchema);
 
@@ -114,6 +115,7 @@ export class ProjectsService {
         projectUrl,
         anonKey: '',
         serviceRoleKey: '',
+        authJwtSecret,
       })
       .returning();
 

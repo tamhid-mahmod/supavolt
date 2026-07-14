@@ -117,6 +117,12 @@
       />
       <button type="button" onclick="listFiles()">List files</button>
       <pre id="storageResult">—</pre>
+      <h2>🔐 Auth — Sign up / Sign in</h2>
+      <input id="authEmail" type="email" placeholder="Email" />
+      <input id="authPassword" type="password" placeholder="Password (min 8)" />
+      <button type="button" onclick="signUp()">Sign Up</button>
+      <button type="button" onclick="signIn()">Sign In</button>
+      <pre id="authResult">—</pre>
     </div>
 
     <script type="module">
@@ -180,6 +186,24 @@
         const { data, error } = await supavolt.storage.from(bucketName).list();
 
         document.getElementById('storageResult').textContent = error
+          ? `Error: ${error}`
+          : JSON.stringify(data, null, 2);
+      };
+
+      window.signUp = async function () {
+        const email = document.getElementById('authEmail').value.trim();
+        const password = document.getElementById('authPassword').value;
+        const { data, error } = await supavolt.auth.signUp({ email, password });
+        document.getElementById('authResult').textContent = error
+          ? `Error: ${error}`
+          : JSON.stringify(data, null, 2);
+      };
+
+      window.signIn = async function () {
+        const email = document.getElementById('authEmail').value.trim();
+        const password = document.getElementById('authPassword').value;
+        const { data, error } = await supavolt.auth.signIn({ email, password });
+        document.getElementById('authResult').textContent = error
           ? `Error: ${error}`
           : JSON.stringify(data, null, 2);
       };
